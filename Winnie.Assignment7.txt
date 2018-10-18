@@ -1,0 +1,56 @@
+nano Winnie_Winnie_music
+
+One Republic: Native: 25 Mar 2018: 12
+Passenger: All the Little lights: 2 Feb 2017: 5
+Alan Walker: Faded: 4 April 2015: 3
+Sia: This: 6 May 2018: 9
+Imagine Dragons: Smoke: 7 Oct 2017: 4
+Jeff Buckley: Grace: 23 May 2016: 67
+Linkin Park: A Thousand Suns: 6 April 2017: 45
+Avicii: Stories: 7 March 2018: 42
+Mumford: Wilder Mind: 3
+James Arthur: Back from the Edge: 30 Jan 2018: 3
+
+nano Winnie_Winnie_L7.sh
+#!/bin/bash
+#SYST13416 Lab#7
+#winnie Winnie
+#winnie_Winnie_L7.sh
+ans=y
+while [[ "$ans" =~ [yY]+ ]]
+do
+  echo -e "Options, enter \n 1 To view the content \n 2 To view the cost of the collection \n 3 To search by the artist \n 4 To search by the purchase date \5 To exit: \c"
+  read op
+  case  $op in
+  [1]) cut -d: -f1-4 Winnie_Winnie_music
+       ;;
+  [2]) cut -d: -f2,4 Winnie_Winnie_music
+       IFS=$'\r\n' command eval 'arr=($(cut -d: -f4 Winnie_Winnie_music))'
+       cost=0
+       for ((i=0;i<${#arr[@]};i++))
+       do
+         let cost=cost+${arr[$i]}
+       done
+       echo "Total cost: $cost" 
+       ;;
+  [3]) echo -e "Enter the artist you want to search for: \c"
+       read artist
+       echo "Albums by this artist:"
+       grep -i "$artist" Winnie_Winnie_music | cut -d: -f2
+       ;;
+  [4]) echo -e "Enter the date you want to search for: \c"
+       read date
+       echo "Albums purchased on this date:"
+       grep -i "$date" Winnie_Winnie_music | cut -d: -f2
+       ;;
+  [5]) echo "Good-Bye"
+       sleep 1
+       exit
+       ;;
+    *) echo "Invalid"
+       ;;
+  esac
+  echo -e "Do you want to continue? (Enter yes to continue): \c"
+  read $ans
+done
+echo "Good-Bye!!"
